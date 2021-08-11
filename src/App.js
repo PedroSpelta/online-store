@@ -10,14 +10,11 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-<<<<<<< HEAD
-=======
         <Route
           exact
           path="/productDetails/:category/:input"
           render={ (props) => <ProductDetails { ...props } /> }
         />
->>>>>>> bfbc4a299615623f002028411281e270f7ddeac5
         <Route exact path="/shop" component={ ShoppingCart } />
         <Route path="/">
           <Home />
