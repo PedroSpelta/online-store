@@ -4,12 +4,12 @@ import ProductCard from './ProductCard';
 
 class ProductList extends Component {
   render() {
-    const { products, query } = this.props;
+    const { products } = this.props;
     if (!products) return <div>Nenhum produto foi encontrado</div>;
     return (
       <div>
         {products.map((prod) => (
-          <ProductCard key={ prod.id } product={ prod } query={ query } />
+          <ProductCard key={ prod.id } product={ prod } />
         ))}
       </div>
     );
@@ -18,7 +18,6 @@ class ProductList extends Component {
 
 ProductList.propTypes = {
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
-  query: PropTypes.string.isRequired,
 };
 
 export default ProductList;

@@ -55,7 +55,6 @@ class Home extends Component {
   async fetchCategoriesList() {
     try {
       const fetch = await api.getCategories();
-      console.log(fetch);
       this.setState({
         categories: fetch,
       });
