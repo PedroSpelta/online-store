@@ -5,14 +5,14 @@ import { ChakraProvider } from '@chakra-ui/react';
 import * as api from './services/api';
 import Home from './components/initial/Home';
 import ShoppingCart from './components/initial/ShoppingCart';
+import ProductDetails from './components/initial/ProductDetails';
 
-api.getCategories();
-api.getProductsFromCategoryAndQuery('veiculo', 'monza');
 function App() {
   return (
     <ChakraProvider>
       <BrowserRouter>
         <Switch>
+          <Route exact path="/productDetails/:id" component={ ProductDetails } />
           <Route exact path="/shop" component={ ShoppingCart } />
           <Route path="/">
             <Home />
