@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { RiShoppingCartLine } from 'react-icons/ri';
+// import { RiShoppingCartLine } from 'react-icons/ri';
 import * as api from '../../services/api';
 import CategoriesList from '../CategoriesList';
 import ProductList from '../ProductList';
@@ -106,7 +106,6 @@ class Home extends Component {
           Carrinho de compras com
           <span>{` ${productsCart.length} `}</span>
           itens
-          <RiShoppingCartLine />
         </Link>
       </>
     );

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RadioGroup, Radio, Stack } from '@chakra-ui/react';
 
 export default class CategoriesList extends React.Component {
   onTrigger(e) {
+    console.log(e);
     this.setValue(e);
   }
 
@@ -15,25 +15,25 @@ export default class CategoriesList extends React.Component {
 
   render() {
     const { categories, catId } = this.props;
+    console.log(catId);
     return (
-      <RadioGroup
-        value={ catId }
-        onChange={ this.setValue }
-        maxWidth={ 250 }
-      >
-        <Stack direction="column">
-          {categories.map((categorie) => (
-            <Radio
-              key={ categorie.id }
-              value={ categorie.id }
-              data-testid="category"
-              onClick={ (e) => this.onTrigger(e) }
-            >
+      <div>
+        {categories.map((categorie) => (
+          <React.Fragment key={ categorie.id }>
+            <label htmlFor={ categorie.id }>
+              <input
+                type="radio"
+                value={ categorie.id }
+                onChange={ (e) => this.onTrigger(e.target.value) }
+                maxWidth={ 250 }
+                data-testid="category"
+                name="caregorias"
+              />
               {categorie.name}
-            </Radio>
-          ))}
-        </Stack>
-      </RadioGroup>
+            </label>
+          </React.Fragment>
+        ))}
+      </div>
     );
   }
 }
