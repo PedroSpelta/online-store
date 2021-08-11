@@ -22,9 +22,11 @@ class Home extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.submitQuery = this.submitQuery.bind(this);
     this.handleChangeCategory = this.handleChangeCategory.bind(this);
+    this.setProductsCart = this.setProductsCart.bind(this);
   }
 
   componentDidMount() {
+    this.setProductsCart();
     this.fetchCategoriesList();
   }
 
@@ -42,10 +44,26 @@ class Home extends Component {
     this.fetchProducts(radioValue);
   }
 
+  setProductsCart() {
+    const localData = localStorage.getItem('cart');
+    if (localData === null) {
+      localStorage.setItem('cart', JSON.stringify([]));
+    }
+    const actualData = localStorage.getItem('cart');
+    this.setState({ productsCart: JSON.parse(actualData) });
+  }
+
   addToCart = (addProduct) => {
     const { productsCart } = this.state;
     productsCart.push(addProduct);
     this.setState({ productsCart });
+    this.addProductToLocal(addProduct);
+  }
+
+  addProductToLocal(product) {
+    const localData = JSON.parse(localStorage.getItem('cart'));
+    localData.push(product);
+    localStorage.setItem('cart', JSON.stringify(localData));
   }
 
   submitQuery() {

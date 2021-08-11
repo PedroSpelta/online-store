@@ -25,7 +25,7 @@ export default class CategoriesList extends React.Component {
                 type="radio"
                 value={ categorie.id }
                 onChange={ (e) => this.onTrigger(e.target.value) }
-                maxWidth={ 250 }
+                maxwidth={ 250 }
                 data-testid="category"
                 name="caregorias"
               />

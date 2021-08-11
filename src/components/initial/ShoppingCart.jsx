@@ -7,16 +7,16 @@ class ShoppingCart extends Component {
     this.state = {
       productsCart: '',
     };
-    this.showProducts = this.showProducts.bind(this);
+    this.loadLocal = this.loadLocal.bind(this);
   }
 
   componentDidMount() {
-    this.showProducts();
+    this.loadLocal();
   }
 
-  showProducts() {
-    const { location: { state: productsCart } } = this.props;
-    this.setState(productsCart);
+  loadLocal() {
+    const localData = localStorage.getItem('cart');
+    this.setState({ productsCart: JSON.parse(localData) });
   }
 
   render() {

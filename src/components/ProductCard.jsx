@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 
 class ProductCard extends Component {
   productToAdd = (product) => {
-    const { call } = this.props;
-    call(product);
+    const { callToAdd } = this.props;
+    callToAdd(product);
   }
 
   render() {
-    const { product } = this.props;
+    const { product, callToAdd } = this.props;
     const { title, thumbnail, price } = product;
     return (
       <div data-testid="product" className="">
@@ -28,6 +28,7 @@ class ProductCard extends Component {
           data-testid="product-detail-link"
           to={ {
             pathname: `/productDetails/${product.id}/${product.title} `,
+            data: { product },
           } }
         >
           Ver Detalhes
@@ -44,7 +45,7 @@ ProductCard.propTypes = {
     price: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
   }).isRequired,
-  call: PropTypes.func.isRequired,
+  callToAdd: PropTypes.func.isRequired,
 };
 
 export default ProductCard;
