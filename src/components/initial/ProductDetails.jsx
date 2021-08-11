@@ -49,5 +49,12 @@ ProductDetails.propTypes = {
       category: PropTypes.string,
     }),
   }).isRequired,
+  location: PropTypes.shape(
+    {
+      data: PropTypes.shape({
+        product: PropTypes.objectOf(PropTypes.string),
+      }),
+    },
+  ).isRequired,
 };
 export default ProductDetails;
