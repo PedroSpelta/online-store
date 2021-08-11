@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { RiShoppingCartLine } from 'react-icons/ri';
+// import { RiShoppingCartLine } from 'react-icons/ri';
 import * as api from '../../services/api';
 import CategoriesList from '../CategoriesList';
 import ProductList from '../ProductList';
+
+// agora vai!!!
 
 class Home extends Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class Home extends Component {
       catId: '',
       input: '',
       products: [],
+      productsCart: [],
     };
 
     this.fetchCategoriesList = this.fetchCategoriesList.bind(this);
@@ -39,6 +42,12 @@ class Home extends Component {
     this.fetchProducts(radioValue);
   }
 
+  addToCart = (addProduct) => {
+    const { productsCart } = this.state;
+    productsCart.push(addProduct);
+    this.setState({ productsCart });
+  }
+
   submitQuery() {
     const { catId } = this.state;
     this.fetchProducts(catId);
@@ -46,7 +55,6 @@ class Home extends Component {
 
   async fetchProducts(catId) {
     const { input } = this.state;
-    console.log(catId, input);
     const fetch = await api.getProductsFromCategoryAndQuery(catId, input);
     const results = await fetch.results;
     this.setState({ products: results });
@@ -64,7 +72,7 @@ class Home extends Component {
   }
 
   render() {
-    const { products, categories, catId } = this.state;
+    const { products, categories, catId, productsCart } = this.state;
 
     return (
       <>
@@ -90,10 +98,14 @@ class Home extends Component {
           handleChangeCategory={ this.handleChangeCategory }
           catId={ catId }
         />
-        <ProductList products={ products } />
-        <Link to="/shop" data-testid="shopping-cart-button">
-          Carrinho de compras
-          <RiShoppingCartLine />
+        <ProductList products={ products } callToAdd={ this.addToCart } />
+        <Link
+          to={ { pathname: '/shop', state: { productsCart } } }
+          data-testid="shopping-cart-button"
+        >
+          Carrinho de compras com
+          <span>{` ${productsCart.length} `}</span>
+          itens
         </Link>
       </>
     );

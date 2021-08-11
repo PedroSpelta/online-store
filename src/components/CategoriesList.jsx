@@ -1,26 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Stack } from '@chakra-ui/react';
 
 export default class CategoriesList extends React.Component {
+  onTrigger(e) {
+    console.log(e);
+    this.setValue(e);
+  }
+
+  setValue = (event) => {
+    const { handleChangeCategory } = this.props;
+    console.log(event);
+    handleChangeCategory(event);
+  }
+
   render() {
-    const { categories, handleChangeCategory } = this.props;
+    const { categories, catId } = this.props;
+    console.log(catId);
     return (
-      <Stack>
+      <div>
         {categories.map((categorie) => (
-          <Button
-            key={ categorie.id }
-            value={ categorie.id }
-            name={ categorie.id }
-            onClick={ (e) => {
-              handleChangeCategory(e.target.name);
-            } }
-            data-testid="category"
-          >
-            {categorie.name}
-          </Button>
+          <React.Fragment key={ categorie.id }>
+            <label htmlFor={ categorie.id }>
+              <input
+                type="radio"
+                value={ categorie.id }
+                onChange={ (e) => this.onTrigger(e.target.value) }
+                maxWidth={ 250 }
+                data-testid="category"
+                name="caregorias"
+              />
+              {categorie.name}
+            </label>
+          </React.Fragment>
         ))}
-      </Stack>
+      </div>
     );
   }
 }
@@ -33,4 +46,5 @@ CategoriesList.propTypes = {
     }),
   ).isRequired,
   handleChangeCategory: PropTypes.func.isRequired,
+  catId: PropTypes.string.isRequired,
 };
