@@ -5,6 +5,8 @@ import * as api from '../../services/api';
 import CategoriesList from '../CategoriesList';
 import ProductList from '../ProductList';
 
+// agora vai!!!
+
 class Home extends Component {
   constructor(props) {
     super(props);
