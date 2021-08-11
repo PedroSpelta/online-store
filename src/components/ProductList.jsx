@@ -9,7 +9,7 @@ class ProductList extends Component {
     return (
       <div>
         {products.map((prod) => (
-          <ProductCard key={ prod.id } product={ prod } call={ callToAdd } />
+          <ProductCard key={ prod.id } product={ prod } callToAdd={ callToAdd } />
         ))}
       </div>
     );
