@@ -3,19 +3,16 @@ import PropTypes from 'prop-types';
 
 export default class CategoriesList extends React.Component {
   onTrigger(e) {
-    console.log(e);
     this.setValue(e);
   }
 
   setValue = (event) => {
     const { handleChangeCategory } = this.props;
-    console.log(event);
     handleChangeCategory(event);
   }
 
   render() {
-    const { categories, catId } = this.props;
-    console.log(catId);
+    const { categories } = this.props;
     return (
       <div>
         {categories.map((categorie) => (
@@ -46,5 +43,4 @@ CategoriesList.propTypes = {
     }),
   ).isRequired,
   handleChangeCategory: PropTypes.func.isRequired,
-  catId: PropTypes.string.isRequired,
 };

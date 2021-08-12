@@ -5,9 +5,12 @@ class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      productsCart: '',
+      cart: [],
     };
     this.loadLocal = this.loadLocal.bind(this);
+    this.redProducts = this.redProducts.bind(this);
+    this.increaseQuantity = this.increaseQuantity.bind(this);
+    this.decreaseQuantity = this.decreaseQuantity.bind(this);
   }
 
   componentDidMount() {
@@ -16,37 +19,82 @@ class ShoppingCart extends Component {
 
   loadLocal() {
     const localData = localStorage.getItem('cart');
-    this.setState({ productsCart: JSON.parse(localData) });
+    const cart = JSON.parse(localData);
+    this.redProducts(cart);
+  }
+
+  redProducts(cart) {
+    const reducedProducts = [];
+    const ids = [];
+    cart.forEach((product) => {
+      if (!ids.includes(product.id)) {
+        let acc = 0;
+        for (let i = 0; i < cart.length; i += 1) {
+          if (product.id === cart[i].id) {
+            acc += 1;
+          }
+        }
+        ids.push(product.id);
+        reducedProducts.push({ data: product, quantity: acc });
+      }
+    });
+    this.setState({ cart: reducedProducts });
+  }
+
+  increaseQuantity(prod) {
+    const { cart } = this.state;
+    for (let index = 0; index < cart.length; index += 1) {
+      if (cart[index].data.id === prod.data.id) {
+        cart[index].quantity += 1;
+      }
+    }
+    this.setState({ cart });
+  }
+
+  decreaseQuantity(prod) {
+    const { cart } = this.state;
+    for (let index = 0; index < cart.length; index += 1) {
+      if (cart[index].data.id === prod.data.id && cart[index].quantity > 1) {
+        cart[index].quantity -= 1;
+      }
+    }
+    this.setState({ cart });
   }
 
   render() {
-    const { productsCart } = this.state;
-    if (productsCart.length === 0) {
-      return (
-        !productsCart ? <div>Carregando...</div> : (
-          <div>
-            <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-          </div>
-        )
+    const { cart } = this.state;
+    if (cart.length === 0) {
+      return !cart ? (
+        <div>Carregando...</div>
+      ) : (
+        <div>
+          <p data-testid="shopping-cart-empty-message">
+            Seu carrinho está vazio
+          </p>
+        </div>
       );
     }
-    const productList = productsCart.reduce((countProduts, prod) => {
-      const list = countProduts;
-      if (prod.id in countProduts) {
-        prod.quantity += 1;
-      } else {
-        prod.quantity = 1;
-      }
-      list.push(prod);
-      return list;
-    }, []);
     return (
       <div>
-        {productList.map((prod) => (
-          <div key={ prod.id }>
-            <span data-testid="shopping-cart-product-name">{ prod.title }</span>
-            <span data-testid="shopping-cart-product-quantity">{ prod.quantity }</span>
-            <span>{ prod.price }</span>
+        {cart.map((prod) => (
+          <div key={ prod.data.id }>
+            <p data-testid="shopping-cart-product-name">{prod.data.title}</p>
+            <p data-testid="shopping-cart-product-quantity">{prod.quantity}</p>
+            <p>{prod.data.price}</p>
+            <button
+              type="button"
+              data-testid="product-decrease-quantity"
+              onClick={ () => this.decreaseQuantity(prod) }
+            >
+              -
+            </button>
+            <button
+              type="button"
+              data-testid="product-increase-quantity"
+              onClick={ () => this.increaseQuantity(prod) }
+            >
+              +
+            </button>
           </div>
         ))}
       </div>
