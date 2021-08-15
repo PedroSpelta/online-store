@@ -5,11 +5,17 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './components/initial/Home';
 import ShoppingCart from './components/initial/ShoppingCart';
 import ProductDetails from './components/initial/ProductDetails';
+import CheckOut from './components/CheckOut';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route
+          exact
+          path="/checkout"
+          component={ CheckOut }
+        />
         <Route
           exact
           path="/productDetails/:category/:input"

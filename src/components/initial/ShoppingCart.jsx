@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class ShoppingCart extends Component {
   constructor(props) {
@@ -8,9 +9,10 @@ class ShoppingCart extends Component {
       cart: [],
     };
     this.loadLocal = this.loadLocal.bind(this);
-    this.redProducts = this.redProducts.bind(this);
+    // this.redProducts = this.redProducts.bind(this);
     this.increaseQuantity = this.increaseQuantity.bind(this);
     this.decreaseQuantity = this.decreaseQuantity.bind(this);
+    this.updateLocal = this.updateLocal.bind(this);
   }
 
   componentDidMount() {
@@ -18,27 +20,33 @@ class ShoppingCart extends Component {
   }
 
   loadLocal() {
-    const localData = localStorage.getItem('cart');
+    const localData = localStorage.getItem('treated');
     const cart = JSON.parse(localData);
-    this.redProducts(cart);
+    this.setState({ cart });
+    // this.redProducts(cart);
   }
 
-  redProducts(cart) {
-    const reducedProducts = [];
-    const ids = [];
-    cart.forEach((product) => {
-      if (!ids.includes(product.id)) {
-        let acc = 0;
-        for (let i = 0; i < cart.length; i += 1) {
-          if (product.id === cart[i].id) {
-            acc += 1;
-          }
-        }
-        ids.push(product.id);
-        reducedProducts.push({ data: product, quantity: acc });
-      }
-    });
-    this.setState({ cart: reducedProducts });
+  // redProducts(cart) {
+  //   const reducedProducts = [];
+  //   const ids = [];
+  //   cart.forEach((product) => {
+  //     if (!ids.includes(product.id)) {
+  //       let acc = 0;
+  //       for (let i = 0; i < cart.length; i += 1) {
+  //         if (product.id === cart[i].id) {
+  //           acc += 1;
+  //         }
+  //       }
+  //       ids.push(product.id);
+  //       reducedProducts.push({ data: product, quantity: acc });
+  //     }
+  //   });
+  //   this.setState({ cart: reducedProducts });
+  // }
+
+  updateLocal(cart) {
+    const newCart = JSON.stringify(cart);
+    localStorage.setItem('treated', newCart);
   }
 
   increaseQuantity(prod) {
@@ -49,6 +57,7 @@ class ShoppingCart extends Component {
       }
     }
     this.setState({ cart });
+    this.updateLocal(cart);
   }
 
   decreaseQuantity(prod) {
@@ -59,6 +68,7 @@ class ShoppingCart extends Component {
       }
     }
     this.setState({ cart });
+    this.updateLocal(cart);
   }
 
   render() {
@@ -97,6 +107,9 @@ class ShoppingCart extends Component {
             </button>
           </div>
         ))}
+        <Link data-testid="checkout-products" to="/checkout">
+          Terminar Compra
+        </Link>
       </div>
     );
   }

@@ -3,19 +3,33 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class ProductDetails extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.addToLocal = this.addToLocal.bind(this);
+    this.insertNewProduct = this.insertNewProduct.bind(this);
+    this.updateLocal = this.updateLocal.bind(this);
+    console.log(this.props.location.data);
   }
 
-  addToLocal(product) {
-    const localData = JSON.parse(localStorage.getItem('cart'));
-    if (localData === null) {
-      localStorage.setItem('cart', JSON.stringify([product]));
-      return;
+  addToLocal(newProduct) {
+    const productList = localStorage.getItem('treated');
+    const newProductList = this.insertNewProduct(JSON.parse(productList), newProduct);
+    this.updateLocal(newProductList);
+  }
+
+  insertNewProduct(productList, newProduct) {
+    for (let index = 0; index < productList.length; index += 1) {
+      if (productList[index].data.id === newProduct.id) {
+        productList[index].quantity += 1;
+        return productList;
+      }
     }
-    localData.push(product);
-    localStorage.setItem('cart', JSON.stringify(localData));
+    productList.push({ data: newProduct, quantity: 1 });
+    return productList;
+  }
+
+  updateLocal(productList) {
+    localStorage.setItem('treated', JSON.stringify(productList));
   }
 
   render() {
@@ -52,7 +66,7 @@ ProductDetails.propTypes = {
   location: PropTypes.shape(
     {
       data: PropTypes.shape({
-        product: PropTypes.objectOf(PropTypes.string),
+        product: PropTypes.objectOf(PropTypes.string || PropTypes.number),
       }),
     },
   ).isRequired,

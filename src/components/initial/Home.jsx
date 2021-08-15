@@ -23,6 +23,8 @@ class Home extends Component {
     this.submitQuery = this.submitQuery.bind(this);
     this.handleChangeCategory = this.handleChangeCategory.bind(this);
     this.setProductsCart = this.setProductsCart.bind(this);
+    this.insertNewProduct = this.insertNewProduct.bind(this);
+    this.updateLocal = this.updateLocal.bind(this);
   }
 
   componentDidMount() {
@@ -45,25 +47,35 @@ class Home extends Component {
   }
 
   setProductsCart() {
-    const localData = localStorage.getItem('cart');
+    const localData = localStorage.getItem('treated');
     if (localData === null) {
-      localStorage.setItem('cart', JSON.stringify([]));
+      localStorage.setItem('treated', JSON.stringify([]));
     }
-    const actualData = localStorage.getItem('cart');
+    const actualData = localStorage.getItem('treated');
     this.setState({ productsCart: JSON.parse(actualData) });
   }
 
-  addToCart = (addProduct) => {
+  addToCart = (newProduct) => {
     const { productsCart } = this.state;
-    productsCart.push(addProduct);
-    this.setState({ productsCart });
-    this.addProductToLocal(addProduct);
+    const newProductsCart = this.insertNewProduct(productsCart, newProduct);
+    this.setState({ productsCart: newProductsCart });
+
+    this.updateLocal(newProductsCart);
   }
 
-  addProductToLocal(product) {
-    const localData = JSON.parse(localStorage.getItem('cart'));
-    localData.push(product);
-    localStorage.setItem('cart', JSON.stringify(localData));
+  insertNewProduct(productList, newProduct) {
+    for (let index = 0; index < productList.length; index += 1) {
+      if (productList[index].data.id === newProduct.id) {
+        productList[index].quantity += 1;
+        return productList;
+      }
+    }
+    productList.push({ data: newProduct, quantity: 1 });
+    return productList;
+  }
+
+  updateLocal(productList) {
+    localStorage.setItem('treated', JSON.stringify(productList));
   }
 
   submitQuery() {
